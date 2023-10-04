@@ -5,8 +5,6 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.times
 
-typealias ExponentialBackoff = Pair<Duration, Double>
-typealias LinearBackoff = Pair<Duration, Duration>
 typealias DelayFunction = (index: Int) -> Duration
 
 
@@ -35,7 +33,7 @@ fun constantDelay(delayMillis: Long) = constantDelay(delayMillis.milliseconds)
  * @see constantDelay
  * @since 1.0.0
  */
-inline val Duration.delay get(): DelayStrategy = constantDelay(this)
+inline val Duration.constantDelay get(): DelayStrategy = constantDelay(this)
 
 /**
  * A [DelayStrategy] that always yields zero delay.
@@ -90,20 +88,13 @@ fun linearBackoffDelay(initialDelay: Duration, increment: Duration) = object : D
     override fun get(index: Int): Duration = (initialDelay + increment * index).coerceAtLeast(Duration.ZERO)
 }
 
-/**
- * A property extension that converts a [LinearBackoff] to a [DelayStrategy] with linearly increasing delays.
- * @see linearBackoffDelay
- * @since 1.0.0
- */
-inline val LinearBackoff.linearBackoffDelay
-    get(): DelayStrategy = linearBackoffDelay(this.first, this.second)
 
 /**
  * An infix function to create a linear backoff [DelayStrategy].
  * @see linearBackoffDelay
  * @since 1.0.0
  */
-infix fun Duration.incrementEachRetryBy(that: Duration): DelayStrategy = linearBackoffDelay(this, that)
+infix fun Duration.delayWithIncrementsOf(that: Duration): DelayStrategy = linearBackoffDelay(this, that)
 
 /**
  * Creates a [DelayStrategy] with delays that increase by the Fibonacci sequence multiplied by the [baseDelay].
@@ -111,17 +102,17 @@ infix fun Duration.incrementEachRetryBy(that: Duration): DelayStrategy = linearB
  * Note: the first delay (index 0) will always be [Duration.ZERO] and the second delay (index 1) will be [baseDelay]
  *
  * @param baseDelay The delay unit used for each Fibonacci number.
+ * @param start The initial fibonacci sequence pair, defaults to (0, 1)
  * @return A [DelayStrategy] with Fibonacci-based delays.
  * @since 1.0.0
  */
-fun fibonacciBackoffDelay(baseDelay: Duration) = object : DelayStrategy {
-    override fun get(index: Int): Duration {
-        return fibonacci(index) * baseDelay
-    }
+fun fibonacciBackoffDelay(baseDelay: Duration, start: Pair<Int, Int> = 0 to 1) = object : DelayStrategy {
+    override fun get(index: Int): Duration = (fibonacci(index) * baseDelay).coerceAtLeast(Duration.ZERO)
 
     private fun fibonacci(n: Int): Int = when (n) {
-        0, 1 -> n
-        else -> (2..n).fold(Pair(0, 1)) { (a, b), _ ->
+        0 -> start.first
+        1 -> start.second
+        else -> (2..n).fold(start) { (a, b), _ ->
             b to a + b
         }.second
     }
@@ -149,19 +140,11 @@ fun exponentialBackoffDelay(initialDelay: Duration, factor: Double) = object : D
 }
 
 /**
- * A property extension that converts an [ExponentialBackoff] to an exponential [DelayStrategy].
- * @see exponentialBackoffDelay
- * @since 1.0.0
- */
-inline val ExponentialBackoff.exponentialBackoffDelay
-    get(): DelayStrategy = exponentialBackoffDelay(this.first, this.second)
-
-/**
  * An infix function to create an exponential backoff [DelayStrategy].
  * @see exponentialBackoffDelay
  * @since 1.0.0
  */
-infix fun Duration.scaleEachRetryBy(that: Double): DelayStrategy = exponentialBackoffDelay(this, that)
+infix fun Duration.delayWithScaleFactorOf(that: Double): DelayStrategy = exponentialBackoffDelay(this, that)
 
 /**
  * Creates a [DelayStrategy] using a custom delay function.
