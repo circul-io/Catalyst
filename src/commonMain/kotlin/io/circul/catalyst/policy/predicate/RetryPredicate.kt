@@ -25,6 +25,8 @@ interface RetryPredicate {
      * Called by [retry], determines whether a retry should be performed based on the [result] of execution
      * and the [retryCount].
      *
+     * [retry]: io.circul.catalyst.retry
+     *
      * @param result The [Result] of the execution.
      * @param retryCount The number of times the operation has been retried.
      * @return `true` if the operation should be retried, `false` otherwise.
