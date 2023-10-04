@@ -1,4 +1,4 @@
-package io.circul.catalyst.policy.delay
+package io.circul.catalyst.delay
 
 import kotlin.js.JsName
 import kotlin.random.Random
@@ -152,7 +152,7 @@ class DelayStrategyTest {
     @Test
     @JsName("testMinOfFunction")
     fun `test minOf function`() {
-        val strategy = minOf(constantStrategy, increasingStrategy)
+        val strategy = io.circul.catalyst.delay.minOf(constantStrategy, increasingStrategy)
         assertEquals(1.seconds, strategy[0])
         assertEquals(2.seconds, strategy[1])
         assertEquals(8.seconds, strategy[7])
@@ -165,7 +165,7 @@ class DelayStrategyTest {
     @Test
     @JsName("testMaxOfMethod")
     fun `test maxOf method`() {
-        val strategy = maxOf(constantStrategy, increasingStrategy)
+        val strategy = io.circul.catalyst.delay.maxOf(constantStrategy, increasingStrategy)
         assertEquals(10.seconds, strategy[0])
         assertEquals(10.seconds, strategy[1])
         assertEquals(10.seconds, strategy[7])

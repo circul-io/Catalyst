@@ -1,11 +1,11 @@
-package io.circul.catalyst.policy.delay
+package io.circul.catalyst.delay
 
 import kotlin.math.pow
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.times
 
-typealias DelayFunction = (index: Int) -> Duration
+private typealias DelayFunction = (index: Int) -> Duration
 
 
 /**

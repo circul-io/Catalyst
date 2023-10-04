@@ -1,5 +1,6 @@
-package io.circul.catalyst.policy.predicate
+package io.circul.catalyst.predicate
 
+import io.circul.catalyst.predicate.RetryPredicate
 import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertFalse

@@ -1,5 +1,6 @@
-package io.circul.catalyst.policy.predicate
+package io.circul.catalyst.predicate
 
+import kotlin.js.JsName
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
@@ -7,7 +8,6 @@ import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.TestTimeSource
 
-// TODO re-do
 class CommonRetryPredicatesTest {
 
     private val nullResult = Result.success<Any?>(null)
@@ -16,7 +16,8 @@ class CommonRetryPredicatesTest {
     private val errorResult = Result.failure<Any?>(Exception("FAIL"))
 
     @Test
-    fun test_attempts_predicate() {
+    @JsName("testAttemptsPredicateFunction")
+    fun `test attempts predicate function`() {
         assertFailsWith(IllegalArgumentException::class) {
             attempts(0)
         }
@@ -35,7 +36,8 @@ class CommonRetryPredicatesTest {
     }
 
     @Test
-    fun test_int_attempts_extension_predicate() {
+    @JsName("testIntAttemptsPropertyExtension")
+    fun `test Int attempts property extension`() {
         assertFailsWith(IllegalArgumentException::class) {
             0.attempts
         }
@@ -54,14 +56,29 @@ class CommonRetryPredicatesTest {
     }
 
     @Test
-    fun test_onException_predicate() = onException.let {
+    @JsName("testOnExceptionPredicateValue")
+    fun `test onException predicate value`() = onException.let {
         assertFalse(it.shouldRetry(intResult, 1))
         assertTrue(it.shouldRetry(errorResult, 1))
         assertFalse(it.shouldRetry(nullResult, 2))
     }
 
     @Test
-    fun test_untilResult_predicate() = untilResult.let {
+    @JsName("testOnNullPredicateValue")
+    fun `test onNull predicateValue`() = onNull.let {
+        assertFalse(it.shouldRetry(intResult, 1))
+        assertFalse(it.shouldRetry(errorResult, 1))
+        assertTrue(it.shouldRetry(nullResult, 2))
+    }
+
+
+
+
+
+
+    @Test
+    @JsName("testUntilResultPredicate")
+    fun `test untilResult predicate`() = untilResult.let {
         assertTrue(it.shouldRetry(nullResult, 1))
         assertFalse(it.shouldRetry(stringResult, 1))
         assertTrue(it.shouldRetry(errorResult, 2))

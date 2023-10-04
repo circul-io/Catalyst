@@ -1,4 +1,4 @@
-package io.circul.catalyst.policy.delay
+package io.circul.catalyst.delay
 
 import kotlin.js.JsName
 import kotlin.test.Test

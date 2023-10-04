@@ -1,4 +1,4 @@
-package io.circul.catalyst.policy.predicate
+package io.circul.catalyst.predicate
 
 
 /**
@@ -22,10 +22,10 @@ package io.circul.catalyst.policy.predicate
 interface RetryPredicate {
 
     /**
-     * Called by [retry], determines whether a retry should be performed based on the [result] of execution
+     * Called by [RetryPolicy.retry], determines whether a retry should be performed based on the [result] of execution
      * and the [retryCount].
      *
-     * [retry]: io.circul.catalyst.retry
+     * [RetryPolicy.retry]: io.circul.catalyst.RetryPolicy.retry
      *
      * @param result The [Result] of the execution.
      * @param retryCount The number of times the operation has been retried.
