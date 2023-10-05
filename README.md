@@ -22,22 +22,19 @@ repositories {
 ### Step 2: Add the Dependency
 Add the following dependency to your project's build file:
 
-<details open>
-<summary>Kotlin (build.gradle.kts)</summary>
+#### Kotlin (build.gradle.kts)
 ```kotlin
 dependencies {
     implementation("io.circul:Catalyst:1.0.0-alpha1")
 }
 ```
-</details>
-<details>
-<summary>Groovy (build.gradle)</summary>
+
+#### Groovy (build.gradle)
 ```groovy
 dependencies {
     implementation 'io.circul:Catalyst:1.0.0-alpha1'
 }
 ```
-</details>
 
 Step 3: Sync your project
 If you're using IntelliJ IDEA or Android Studio, you may need to synchronize your project after adding the dependency.
