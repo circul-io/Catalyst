@@ -10,7 +10,7 @@ import kotlin.time.TimeSource
  *
  * @since 1.0.0
  */
-private typealias PredicateFunction = (Result<Any?>, Int) -> Boolean
+typealias PredicateFunction = (Result<Any?>, Int) -> Boolean
 
 /**
  * Returns a [RetryPredicate] that determines if a retry should be performed based on the number

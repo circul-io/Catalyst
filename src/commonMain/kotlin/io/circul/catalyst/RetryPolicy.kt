@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
  *
  * @since 1.0.0
  */
-private typealias RetryBlock<T> = suspend (Int) -> T
+typealias RetryBlock<T> = suspend (Int) -> T
 
 /**
  * Represents a retry policy that combines a [RetryPredicate] and a [DelayStrategy].

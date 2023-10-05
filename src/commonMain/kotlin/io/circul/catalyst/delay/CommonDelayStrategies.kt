@@ -5,7 +5,7 @@ import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.times
 
-private typealias DelayFunction = (index: Int) -> Duration
+typealias DelayFunction = (index: Int) -> Duration
 
 
 /**

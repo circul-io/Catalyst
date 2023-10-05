@@ -20,6 +20,7 @@ $dokka.location:io.circul.catalyst.delay//sequentialDelay/#kotlin.collections.Li
 $dokka.location:io.circul.catalyst.delay//sequentialDelay/kotlin.collections.List[kotlin.time.Duration]#/PointingToDeclaration/-catalyst/io.circul.catalyst.delay/sequential-delay.html
 $dokka.location:io.circul.catalyst.delay//times/kotlin.Double#io.circul.catalyst.delay.DelayStrategy/PointingToDeclaration/-catalyst/io.circul.catalyst.delay/times.html
 $dokka.location:io.circul.catalyst.delay//times/kotlin.Int#io.circul.catalyst.delay.DelayStrategy/PointingToDeclaration/-catalyst/io.circul.catalyst.delay/times.html
+$dokka.location:io.circul.catalyst.delay/DelayFunction///PointingToDeclaration/-catalyst/io.circul.catalyst.delay/-delay-function/index.html
 $dokka.location:io.circul.catalyst.delay/DelayStrategy///PointingToDeclaration/-catalyst/io.circul.catalyst.delay/-delay-strategy/index.html
 $dokka.location:io.circul.catalyst.delay/DelayStrategy/coerceAtLeast/#kotlin.time.Duration/PointingToDeclaration/-catalyst/io.circul.catalyst.delay/-delay-strategy/coerce-at-least.html
 $dokka.location:io.circul.catalyst.delay/DelayStrategy/coerceAtMost/#kotlin.time.Duration/PointingToDeclaration/-catalyst/io.circul.catalyst.delay/-delay-strategy/coerce-at-most.html
@@ -47,6 +48,7 @@ $dokka.location:io.circul.catalyst.predicate//timeLimit/kotlin.time.Duration#/Po
 $dokka.location:io.circul.catalyst.predicate//until/#kotlin.Function2[kotlin.Result[kotlin.Any?],kotlin.Int,kotlin.Boolean]/PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/until.html
 $dokka.location:io.circul.catalyst.predicate//untilResult/#/PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/until-result.html
 $dokka.location:io.circul.catalyst.predicate//untilResultType/#/PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/until-result-type.html
+$dokka.location:io.circul.catalyst.predicate/PredicateFunction///PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/-predicate-function/index.html
 $dokka.location:io.circul.catalyst.predicate/RetryPredicate///PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/-retry-predicate/index.html
 $dokka.location:io.circul.catalyst.predicate/RetryPredicate/and/#io.circul.catalyst.predicate.RetryPredicate/PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/-retry-predicate/and.html
 $dokka.location:io.circul.catalyst.predicate/RetryPredicate/nand/#io.circul.catalyst.predicate.RetryPredicate/PointingToDeclaration/-catalyst/io.circul.catalyst.predicate/-retry-predicate/nand.html
@@ -61,6 +63,7 @@ $dokka.location:io.circul.catalyst//asRetryPolicy/io.circul.catalyst.delay.Delay
 $dokka.location:io.circul.catalyst//asRetryPolicy/io.circul.catalyst.predicate.RetryPredicate#/PointingToDeclaration/-catalyst/io.circul.catalyst/as-retry-policy.html
 $dokka.location:io.circul.catalyst//with/io.circul.catalyst.delay.DelayStrategy#io.circul.catalyst.predicate.RetryPredicate/PointingToDeclaration/-catalyst/io.circul.catalyst/with.html
 $dokka.location:io.circul.catalyst//with/io.circul.catalyst.predicate.RetryPredicate#io.circul.catalyst.delay.DelayStrategy/PointingToDeclaration/-catalyst/io.circul.catalyst/with.html
+$dokka.location:io.circul.catalyst/RetryBlock///PointingToDeclaration/-catalyst/io.circul.catalyst/-retry-block/index.html
 $dokka.location:io.circul.catalyst/RetryPolicy///PointingToDeclaration/-catalyst/io.circul.catalyst/-retry-policy/index.html
 $dokka.location:io.circul.catalyst/RetryPolicy/RetryPolicy/#io.circul.catalyst.predicate.RetryPredicate#io.circul.catalyst.delay.DelayStrategy/PointingToDeclaration/-catalyst/io.circul.catalyst/-retry-policy/-retry-policy.html
 $dokka.location:io.circul.catalyst/RetryPolicy/retry/#kotlin.coroutines.SuspendFunction1[kotlin.Int,TypeParam(bounds=[kotlin.Any?])]/PointingToDeclaration/-catalyst/io.circul.catalyst/-retry-policy/retry.html
