@@ -38,8 +38,9 @@ dependencies {
 }
 ```
 
-Step 3: Sync your project
+### Step 3: Sync your project
 If you're using IntelliJ IDEA or Android Studio, you may need to synchronize your project after adding the dependency.
+
 ---
 
 ## Usage
