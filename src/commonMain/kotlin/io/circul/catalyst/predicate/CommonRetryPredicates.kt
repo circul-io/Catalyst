@@ -4,13 +4,14 @@ import kotlin.time.Duration
 import kotlin.time.TimeSource
 
 /**
- * Represents a predicate function that produces a [Boolean] for a given [Result] and the retry count [Int].
+ * Represents a predicate function that produces a [Boolean] for a given [Result], retry count [Int], and
+ * elapsed time [Duration].
  *
  * Used by [on] and [until] for creating custom [RetryPredicate]s
  *
  * @since 1.0.0
  */
-typealias PredicateFunction = (Result<Any?>, Int) -> Boolean
+typealias PredicateFunction = (Result<Any?>, Int, Duration) -> Boolean
 
 /**
  * Returns a [RetryPredicate] that determines if a retry should be performed based on the number
@@ -27,7 +28,7 @@ fun attempts(n: Int) = object : RetryPredicate {
         require(n > 0) { "attempts must be > 0" }
     }
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean = retryCount < n - 1
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean = retryCount < n - 1
 }
 
 /**
@@ -55,7 +56,7 @@ val Int.attempts get() = attempts(this)
  */
 val onException = object : RetryPredicate {
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean = result.isFailure
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean = result.isFailure
 }
 
 /**
@@ -70,7 +71,7 @@ val onException = object : RetryPredicate {
  */
 val onNull = object : RetryPredicate {
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
         result.isSuccess && result.getOrNull() == null
 }
 
@@ -101,7 +102,8 @@ val untilResult = onException or onNull
  */
 inline fun on(crossinline predicate: PredicateFunction) = object : RetryPredicate {
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean = predicate(result, retryCount)
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+        predicate(result, retryCount, elapsedTime)
 }
 
 /**
@@ -114,7 +116,8 @@ inline fun on(crossinline predicate: PredicateFunction) = object : RetryPredicat
  */
 inline fun until(crossinline predicate: PredicateFunction) = object : RetryPredicate {
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean = !predicate(result, retryCount)
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+        !predicate(result, retryCount, elapsedTime)
 }
 
 /**
@@ -127,7 +130,7 @@ inline fun until(crossinline predicate: PredicateFunction) = object : RetryPredi
  * @since 1.0.0
  */
 inline fun <reified T> onResultType(): RetryPredicate = object : RetryPredicate {
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int) = result.getOrNull() is T
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration) = result.getOrNull() is T
 }
 
 /**
@@ -140,7 +143,7 @@ inline fun <reified T> onResultType(): RetryPredicate = object : RetryPredicate 
  * @since 1.0.0
  */
 inline fun <reified T> untilResultType(): RetryPredicate = object : RetryPredicate {
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int) = result.getOrNull() !is T
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration) = result.getOrNull() !is T
 }
 
 /**
@@ -148,14 +151,13 @@ inline fun <reified T> untilResultType(): RetryPredicate = object : RetryPredica
  * The predicate will allow retries as long as the elapsed time since the first attempt is less than [duration].
  *
  * @param duration The maximum amount of time to keep retrying.
- * @param clock The [TimeSource] to use for tracking the elapsed time, defaulting to [TimeSource.Monotonic].
  * @return A [RetryPredicate] that limits the retry time to the specified [duration].
  * @since 1.0.0
  */
-fun timeLimit(duration: Duration, clock: TimeSource = TimeSource.Monotonic) = object : RetryPredicate {
-    private val startTime = clock.markNow()
+fun timeLimit(duration: Duration) = object : RetryPredicate {
 
-    override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean = startTime.elapsedNow() < duration
+    override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+        elapsedTime < duration
 }
 
 /**

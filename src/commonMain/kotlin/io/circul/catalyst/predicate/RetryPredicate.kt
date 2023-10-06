@@ -1,5 +1,7 @@
 package io.circul.catalyst.predicate
 
+import kotlin.time.Duration
+
 
 /**
  * Represents a retry predicate that determines whether a block of code should be retried
@@ -29,10 +31,11 @@ interface RetryPredicate {
      *
      * @param result The [Result] of the execution.
      * @param retryCount The number of times the operation has been retried.
+     * @param elapsedTime The time since the retry function was first called
      * @return `true` if the operation should be retried, `false` otherwise.
      * @since 1.0.0
      */
-    fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean
+    fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean
 
     /**
      * Negates the retry condition, inverting the result of [shouldRetry].
@@ -54,8 +57,8 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     operator fun not() = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            !this@RetryPredicate.shouldRetry(result, retryCount)
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            !this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime)
     }
 
     /**
@@ -81,8 +84,9 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun and(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            this@RetryPredicate.shouldRetry(result, retryCount) && other.shouldRetry(result, retryCount)
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) &&
+                    other.shouldRetry(result, retryCount, elapsedTime)
     }
 
     /**
@@ -108,8 +112,9 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun or(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            this@RetryPredicate.shouldRetry(result, retryCount) || other.shouldRetry(result, retryCount)
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) ||
+                    other.shouldRetry(result, retryCount, elapsedTime)
     }
 
     /**
@@ -135,8 +140,9 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun xor(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            this@RetryPredicate.shouldRetry(result, retryCount) != other.shouldRetry(result, retryCount)
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) !=
+                    other.shouldRetry(result, retryCount, elapsedTime)
     }
 
     /**
@@ -162,8 +168,9 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun nand(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            !(this@RetryPredicate.shouldRetry(result, retryCount) && other.shouldRetry(result, retryCount))
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            !(this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) &&
+                    other.shouldRetry(result, retryCount, elapsedTime))
     }
 
     /**
@@ -189,8 +196,9 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun nor(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            !(this@RetryPredicate.shouldRetry(result, retryCount) || other.shouldRetry(result, retryCount))
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            !(this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) ||
+                    other.shouldRetry(result, retryCount, elapsedTime))
     }
 
     /**
@@ -216,7 +224,8 @@ interface RetryPredicate {
      * @since 1.0.0
      */
     infix fun xnor(other: RetryPredicate): RetryPredicate = object : RetryPredicate {
-        override fun shouldRetry(result: Result<Any?>, retryCount: Int): Boolean =
-            this@RetryPredicate.shouldRetry(result, retryCount) == other.shouldRetry(result, retryCount)
+        override fun shouldRetry(result: Result<Any?>, retryCount: Int, elapsedTime: Duration): Boolean =
+            this@RetryPredicate.shouldRetry(result, retryCount, elapsedTime) ==
+                    other.shouldRetry(result, retryCount, elapsedTime)
     }
 }

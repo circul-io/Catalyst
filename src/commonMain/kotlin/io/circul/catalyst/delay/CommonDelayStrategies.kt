@@ -99,7 +99,8 @@ infix fun Duration.delayWithIncrementsOf(that: Duration): DelayStrategy = linear
 /**
  * Creates a [DelayStrategy] with delays that increase by the Fibonacci sequence multiplied by the [baseDelay].
  *
- * Note: the first delay (index 0) will always be [Duration.ZERO] and the second delay (index 1) will be [baseDelay]
+ * Note: for the default start pair of (0, 1) the first delay (index 0) will always be [Duration.ZERO] and the second
+ * delay (index 1) will be [baseDelay]
  *
  * @param baseDelay The delay unit used for each Fibonacci number.
  * @param start The initial fibonacci sequence pair, defaults to (0, 1)
@@ -117,6 +118,13 @@ fun fibonacciBackoffDelay(baseDelay: Duration, start: Pair<Int, Int> = 0 to 1) =
         }.second
     }
 }
+
+/**
+ * An infix function to create a fibonacci backoff [DelayStrategy].
+ * @see fibonacciBackoffDelay
+ * @since 1.0.0
+ */
+infix fun Duration.delayWithFibonacciSequenceOf(that: Pair<Int, Int>): DelayStrategy = fibonacciBackoffDelay(this, that)
 
 /**
  * A property extension that converts the [Duration] to a Fibonacci-based [DelayStrategy].

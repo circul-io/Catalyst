@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.circul"
-version = "1.0.0-alpha1"
+version = "1.0.0"
 
 repositories {
     mavenCentral()

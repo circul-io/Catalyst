@@ -25,7 +25,7 @@ class RetryPolicyTest {
     @Test
     @JsName("retryDoesNotRetryWhenPredicateReturnsFalse")
     fun `retry does not retry when predicate returns false`() = runTest {
-        val policy = on { _, _ -> false }.asRetryPolicy
+        val policy = on { _, _, _ -> false }.asRetryPolicy
         assertFailsWith<RuntimeException> {
             policy.retry { throw RuntimeException("Error!") }
         }

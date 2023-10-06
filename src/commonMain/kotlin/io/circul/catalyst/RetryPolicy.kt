@@ -5,6 +5,8 @@ import io.circul.catalyst.delay.noDelay
 import io.circul.catalyst.predicate.RetryPredicate
 import io.circul.catalyst.predicate.onException
 import kotlinx.coroutines.delay
+import kotlin.time.TimeMark
+import kotlin.time.TimeSource
 
 
 /**
@@ -32,16 +34,20 @@ open class RetryPolicy(
     /**
      * Retries the given [block] using this [RetryPolicy]
      *
+     * @param clock A [TimeSource] used for measuring the elapsed time in [RetryPredicate.shouldRetry]
+     * (default: [TimeSource.Monotonic])
      * @param block The block to be executed and potentially retried.
      * @return The result of the [block], if successful.
      * @throws Throwable if the [block] fails and no further retry attempts should be made.
      * @since 1.0.0
      */
-    suspend fun <T> retry(block: RetryBlock<T>): T = retry(0, block)
+    suspend fun <T> retry(clock: TimeSource = TimeSource.Monotonic, block: RetryBlock<T>): T =
+        retry(clock.markNow(), 0, block)
 
     /**
      * Private recursive function to execute and potentially retry the [block] based on this [RetryPolicy]
      *
+     * @param startTime the [TimeMark] representing the time when the retry function was called
      * @param retryCounter The current retry attempt count.
      * @param block The block to be executed and potentially retried.
      * @return The result of the [block], if successful.
@@ -49,6 +55,7 @@ open class RetryPolicy(
      * @since 1.0.0
      */
     private suspend fun <T> retry(
+        startTime: TimeMark,
         retryCounter: Int,
         block: RetryBlock<T>
     ): T {
@@ -58,9 +65,9 @@ open class RetryPolicy(
             Result.failure(e)
         }
 
-        if (retryPredicate.shouldRetry(result, retryCounter)) {
+        if (retryPredicate.shouldRetry(result, retryCounter, startTime.elapsedNow())) {
             delay(delayStrategy[retryCounter])
-            return retry(retryCounter + 1, block)
+            return retry(startTime, retryCounter + 1, block)
         }
 
         return result.getOrThrow()

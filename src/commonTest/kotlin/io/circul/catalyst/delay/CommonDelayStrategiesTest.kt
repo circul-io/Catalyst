@@ -115,6 +115,18 @@ class CommonDelayStrategiesTest {
     }
 
     @Test
+    @JsName("testDelayWithFibonacciSequenceOfPairInfixFunction")
+    fun `test delayWithFibonacciSequenceOf Pair infix function`() {
+        val delay = 1.seconds delayWithFibonacciSequenceOf (2 to 2)
+        assertEquals(2.seconds, delay[0])
+        assertEquals(2.seconds, delay[1])
+        assertEquals(4.seconds, delay[2])
+        assertEquals(6.seconds, delay[3])
+        assertEquals(10.seconds, delay[4])
+        assertEquals(16.seconds, delay[5])
+    }
+
+    @Test
     @JsName("testDurationFibonacciBackoffDelayPropertyExtension")
     fun `test Duration fibonacciBackoffDelay property extension`() {
         val delay = 1.seconds.fibonacciBackoffDelay
