@@ -6,14 +6,39 @@
 
 Catalyst is a Kotlin Multiplatform coroutine-based retry library that offers an expressive DSL for building complex
 retry policies.
+
+---
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Compose a RetryPredicate](#compose-a-retrypredicate)
+    - [Limiting Retries](#limiting-retries)
+    - [Considering the Result](#considering-the-result)
+    - [Combining Predicates](#combining-predicates)
+    - [Stateful Predicates](#stateful-predicates)
+  - [Define a DelayStrategy](#define-a-delaystrategy)
+    - [Constant Delay](#constant-delay)
+    - [Sequential Delay](#sequential-delay)
+    - [Linear Backoff Delay](#linear-backoff-delay)
+    - [Fibonacci Backoff Delay](#fibonacci-backoff-delay)
+    - [Exponential Backoff Delay](#exponential-backoff-delay)
+    - [Custom Delay](#custom-delay)
+    - [Composite Delay Strategies](#composite-delay-strategies)
+    - [Constraining Delay Strategies](#constraining-delay-strategies)
+    - [Jitter Factors](#jitter-factors)
+  - [Create a RetryPolicy](#create-a-retrypolicy)
+  - [Use a RetryPolicy](#use-a-retrypolicy)
+- [Documentation](#documentation)
+- [Licence](#licence)
+
 ---
 
 ## Installation
 Catalyst is on [Maven Central](https://central.sonatype.com/artifact/io.circul/Catalyst/1.0.0/overview).
 To use Catalyst in your Kotlin project, follow these steps:
 
-### Step 1: Add the Maven Central Repository (if not already added)
-Ensure you have the **mavenCentral()** repository in your project's build file:
+- Ensure you've added the Maven Central repository to your project's build file:
 
 ```groovy
 repositories {
@@ -21,25 +46,24 @@ repositories {
 }
 ```
 
-### Step 2: Add the Dependency
-Add the following dependency to your project's build file:
+- Add the dependency:
 
-#### Kotlin (build.gradle.kts)
-```kotlin
-dependencies {
-    implementation("io.circul:Catalyst:1.0.0")
-}
-```
+  - For Kotlin (`build.gradle.kts`):
+  ```kotlin
+  dependencies {
+      implementation("io.circul:Catalyst:1.0.0")
+  }
+  ```
 
-#### Groovy (build.gradle)
-```groovy
-dependencies {
-    implementation 'io.circul:Catalyst:1.0.0'
-}
-```
+  - For Groovy (`build.gradle`):
+  ```groovy
+  dependencies {
+      implementation 'io.circul:Catalyst:1.0.0'
+  }
+  ```
 
-### Step 3: Sync your project
-If you're using IntelliJ IDEA or Android Studio, you may need to synchronize your project after adding the dependency.
+⚠️ _you may need to synchronize your project after adding the dependency_
+
 
 ---
 
