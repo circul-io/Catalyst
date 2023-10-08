@@ -62,9 +62,6 @@ repositories {
   }
   ```
 
-⚠️ _you may need to synchronize your project after adding the dependency_
-
-
 ---
 
 ## Usage
